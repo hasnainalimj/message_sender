@@ -4,10 +4,19 @@ import {
   Text,
   View,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  FlatList
 } from "react-native";
 import * as Contacts from "expo-contacts";
 const { width, height } = Dimensions.get("window");
+
+function Item({ title }) {
+  return (
+    <View style={styles.listItem}>
+      <Text style={styles.username}>{title}</Text>
+    </View>
+  );
+}
 
 export default class App extends React.Component {
   constructor(props) {
@@ -72,7 +81,10 @@ export default class App extends React.Component {
                 <Text>No Contacts Found!</Text>
               </View>
             ) : (
-              <Text>Contacts Found</Text>
+              <FlatList
+                data={contacts}
+                renderItem={obj => <Item title={obj.item.name} />}
+              />
             )}
           </React.Fragment>
         )}
@@ -87,5 +99,16 @@ const styles = StyleSheet.create({
     height,
     alignItems: "center",
     justifyContent: "center"
+  },
+  listItem: {
+    width,
+    height: height * 0.12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#000",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  username: {
+    fontSize: width * 0.05
   }
 });
